@@ -2,8 +2,8 @@
 
 Summary: A free MP3 codec
 Name: lame
-Version: 3.99.3
-Release: 23%{?dist}
+Version: 3.99.5
+Release: 24%{?dist}
 License: LGPLv2+
 Group: Applications/Multimedia
 Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -89,6 +89,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/lame.1*
 
 %changelog
+* Sat May 2 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 3.99.5-24
+- Update to 3.99.5.
+
 * Sun Nov 27 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 3.99.3-23
 - Update to 3.99.3.
 
