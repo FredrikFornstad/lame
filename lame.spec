@@ -3,7 +3,7 @@
 Summary: A free MP3 codec
 Name: lame
 Version: 3.99.5
-Release: 24%{?dist}
+Release: 25%{?dist}
 License: LGPLv2+
 Group: Applications/Multimedia
 Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -13,7 +13,7 @@ BuildRoot: %{_tmppath}/%{name}-root
 #BuildRequires: gcc-c++
 BuildRequires: ncurses-devel, libsndfile-devel, gtk+-devel >= 1.2.0
 %ifarch %{ix86} x86_64
-BuildRequires: nasm
+BuildRequires: nasm, atrpms-rpm-config
 %endif
 Requires: ncurses >= 5.0
 Provides: lame-libs = %{version}-%{release}
@@ -89,6 +89,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/lame.1*
 
 %changelog
+* Wed May 6 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 3.99.5-25
+- Added buildrequirement atrpms-rpm-config
+
 * Sat May 2 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 3.99.5-24
 - Update to 3.99.5.
 
