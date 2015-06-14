@@ -3,7 +3,7 @@
 Summary: A free MP3 codec
 Name: lame
 Version: 3.99.5
-Release: 25%{?dist}
+Release: 26%{?dist}
 License: LGPLv2+
 Group: Applications/Multimedia
 Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -13,15 +13,12 @@ BuildRoot: %{_tmppath}/%{name}-root
 #BuildRequires: gcc-c++
 BuildRequires: ncurses-devel, libsndfile-devel, gtk+-devel >= 1.2.0
 %ifarch %{ix86} x86_64
-BuildRequires: nasm, atrpms-rpm-config
+BuildRequires: nasm
 %endif
 Requires: ncurses >= 5.0
 Provides: lame-libs = %{version}-%{release}
 Provides: mp3encoder = %{version}-%{release}
-Obsoletes: lame-libs < %{version}-%{release}, mp3encoder < %{version}-%{release}
-
-%lib_package mp3lame 0
-%lib_dependencies
+Requires: %{name}-libs = %{version}-%{release}
 
 %description
 LAME is an educational tool to be used for learning about MP3 encoding.
@@ -29,6 +26,22 @@ The goal of the LAME project is to use the open source model to improve
 the psycho acoustics, noise shaping and speed of MP3. Another goal of
 the LAME project is to use these improvements for the basis of a patent
 free audio compression codec for the GNU project.
+
+%package libs
+Summary: LAME MP3 Codec library
+Group: Development/Libraries
+Obsoletes: lame-libs < %{version}-%{release}, mp3encoder < %{version}-%{release}
+
+%description libs
+This package contains the LAME MP3 Codec library.
+
+%package devel
+Summary: LAME MP3 Codec development files
+Group: Development/Libraries
+Requires: %{name}-libs = %{version}-%{release}
+
+%description devel
+This package contains the LAME MP3 Codec development files.
 
 %prep
 %setup -q
@@ -73,6 +86,10 @@ cat > develfiles.list << EOF
 %doc API HACKING STYLEGUIDE
 EOF
 
+%post libs -p /sbin/ldconfig
+
+%postun libs -p /sbin/ldconfig
+
 %clean
 rm -rf %{buildroot}
 
@@ -88,7 +105,21 @@ rm -rf %{buildroot}
 %endif
 %{_mandir}/man1/lame.1*
 
+%files libs
+%defattr (-,root,root,-)
+%{_libdir}/libmp3lame.so.0.0.0
+
+%files devel
+%defattr (-,root,root,-)
+%{_includedir}/*
+%{_libdir}/libmp3lame.la
+%{_libdir}/*.so
+%{_libdir}/*.so.0
+
 %changelog
+* Sat Jun 13 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 3.99.5-26
+- Removed atrpms script dependency to comply with ClearOS policy
+
 * Wed May 6 2015 Fredrik Fornstad <fredrik.fornstad@gmail.com> - 3.99.5-25
 - Added buildrequirement atrpms-rpm-config
 
